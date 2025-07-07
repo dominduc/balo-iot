@@ -1,0 +1,288 @@
+<!--Khai báo-->
+<!DOCTYPE html>
+<html lang="vi">
+<!--thông tin cấu hình-->
+<head>
+  <!-- Leaflet CSS -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<!-- Leaflet JS -->
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+></script>
+
+  <meta charset="UTF-8">    <!-- Mã hóa ký tự UTF-8 để hỗ trợ tiếng Việt -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balo Thông Minh</title>  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">🎒 Balo Thông Minh IoT</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="#" onclick="showPage('home')">Trang chủ</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" onclick="showPage('settings')">Cài đặt</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    <!-- Trang chủ -->
+  <div class="container py-4 page-section active" id="home">
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="fw-bold text-primary mb-0">🏠 Trang chủ</h3>
+  <div id="home-clock" class="mini-clock"></div>
+</div>
+
+
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+ 
+      <!-- Trợ lý ảo -->
+      <div class="col">
+        <div class="card p-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="section-title m-0">🧠 Trợ lý ảo</h5>
+          <span id="reminder-badge" class="reminder-bubble d-none">1</span>
+          </div>
+          <input type="text" class="form-control mb-5 mt-4" placeholder="Bạn muốn tôi làm gì?" disabled>
+          <button class="btn btn-primary mt-5" onclick="openAssistant()">📤 Gửi lệnh</button>
+        </div>
+      </div>
+      
+      <!-- Cảm biến gia tốc + GPS -->
+      <div class="col">
+        <div class="card p-3">
+          <h5 class="section-title">🌍 Cảm biến gia tốc + GPS</h5>
+            <p>Kinh độ: <strong id="longitude">--</strong></p>
+            <p>Vĩ độ: <strong id="latitude">--</strong></p>  
+          <p>Trạng thái: <strong>Đang đứng yên</strong></p>
+          <p>Độ rung: <strong>0.02g</strong></p>
+          <button class="btn btn-primary mt-3" onclick="showPage('accelerometer')">Biểu đồ</button>
+        </div>
+      </div>
+
+      <!-- Tính toán cân nặng -->
+      <div class="col">
+        <div class="card p-4">
+          <h5 class="section-title">🏋️ Cân nặng balo</h5>
+          <p>Trọng lượng: <strong>7.2kg</strong></p>
+          <p class="text-danger">Cảnh báo: Vượt quá 15% trọng lượng cơ thể!</p>
+          <br>
+          
+        
+          <a href="https://www.youtube.com/watch?v=fw5XpWfMGWA" target="_blank" class="btn btn-primary mt-5">📘 Xem tư thế đúng</a>
+        </div>
+      </div>
+
+      <!-- Dự báo thời tiết -->
+      <div class="col">
+        <div class="card p-3">
+          <h5 class="section-title">☁️ Dự báo thời tiết</h5>
+          <p>Vị trí: <strong id="city">--</strong></p>
+          <p>Nhiệt độ: <strong id="temp">--</strong></p>
+          <p>Độ ẩm: <strong id="humidity">--</strong></p>
+          <p>Chất lượng không khí (AQI): <strong id="aqi">--</strong></p>
+          <p>💡 Gợi ý: <strong id="suggestion">Đang tải...</strong></p>
+        </div>
+      </div>
+
+      <!-- TKB -->
+      <div class="col">
+        <div class="card p-3">
+          <h5 class="section-title">📚 Thời khóa biểu</h5>
+          <p>Lịch học hôm nay: <strong id="today-schedule">Đang tải...</strong></p>
+          <br>
+          <button class="btn btn-primary mt-5" onclick="showPage('schedule')">
+            <span>📘</span>
+            <span>xem thêm...</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- SOS -->
+      <div class="col">
+        <div class="card p-3">
+          <h5 class="section-title">🚨 SOS</h5>
+          <p>Vị trí: <strong>Hà Nội - 105.85 / 21.03</strong></p>
+          <p>Lời nhắn: <strong>Khẩn cấp! Gửi xe cứu hỏa.</strong></p>
+          <p>Thời gian: <strong>12:35 - 23/06/2025</strong></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<!-- TRANG PHỤ -->
+  <!-- Trợ lý ảo -->
+  <div class="container py-4 page-section" id="assistant">
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="fw-bold text-primary mb-0">🧠 Trợ lý ảo - Giao diện trò chuyện</h3>
+</div>
+
+    <div id="chat-box" class="chat-box mb-3"></div>
+
+    <div class="input-group">
+      <input type="text" id="user-input" class="form-control" placeholder="Nhập nội dung..." />
+      <button class="btn btn-primary" onclick="sendMessage()">Gửi</button>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-3">
+  <button class="btn btn-outline-secondary" onclick="showPage('home')">⬅ Quay lại trang chủ</button>
+  <button class="btn btn-outline-primary" onclick="toggleReminderPopup()" id="reminder-summary">
+    📋 Lời nhắc nhở: 0
+  </button>
+</div>
+
+<!-- Popup danh sách lời nhắc -->
+<div id="reminder-popup" class="reminder-popup shadow d-none">
+  <div class="popup-header d-flex justify-content-between align-items-center">
+    <strong>📋 Lời nhắc chưa hoàn thành</strong>
+    <button class="btn btn-sm btn-danger" onclick="toggleReminderPopup()">✖</button>
+  </div>
+  <ul id="reminder-items" class="list-group mt-2"></ul>
+</div>
+
+  </div>
+
+  <!-- Gia tốc -->
+   <div class="container py-4 page-section" id="accelerometer">
+     <h3 class="mb-4 fw-bold text-primary">📈 Biểu đồ gia tốc + GPS</h3>
+     <div id="map" style="height: 400px; width: 100%; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"></div>
+     <button class="btn btn-outline-secondary mt-2" onclick="showPage('home')">⬅ Quay lại trang chủ</button>
+   </div>
+
+<!-- Thời khóa biểu -->
+<div id="schedule" class="container py-4 page-section">
+  <div class="mb-2 d-flex align-items-center">
+    <label class="me-2" style="width: 100px;">Thứ hai:</label>
+    <input type="text" id="monday" class="form-control me-2" placeholder="Nhập môn học...">
+    <button class="btn btn-danger" onclick="clearInput(this)">🗑</button>
+  </div>
+  <div class="mb-2 d-flex align-items-center">
+    <label class="me-2" style="width: 100px;">Thứ ba:</label>
+    <input type="text" id="tuesday" class="form-control me-2" placeholder="Nhập môn học...">
+    <button class="btn btn-danger" onclick="clearInput(this)">🗑</button>
+  </div>
+  <div class="mb-2 d-flex align-items-center">
+    <label class="me-2" style="width: 100px;">Thứ tư:</label>
+    <input type="text" id="wednesday" class="form-control me-2" placeholder="Nhập môn học...">
+    <button class="btn btn-danger" onclick="clearInput(this)">🗑</button>
+  </div>
+  <div class="mb-2 d-flex align-items-center">
+    <label class="me-2" style="width: 100px;">Thứ năm:</label>
+    <input type="text" id="thursday" class="form-control me-2" placeholder="Nhập môn học...">
+    <button class="btn btn-danger" onclick="clearInput(this)">🗑</button>
+  </div>
+  <div class="mb-2 d-flex align-items-center">
+    <label class="me-2" style="width: 100px;">Thứ sáu:</label>
+    <input type="text" id="friday" class="form-control me-2" placeholder="Nhập môn học...">
+    <button class="btn btn-danger" onclick="clearInput(this)">🗑</button>
+  </div>
+  <div class="mb-2 d-flex align-items-center">
+    <label class="me-2" style="width: 100px;">Thứ bảy:</label>
+    <input type="text" id="saturday" class="form-control me-2" placeholder="Nhập môn học...">
+    <button class="btn btn-danger" onclick="clearInput(this)">🗑</button>
+  </div>
+  <div class="mb-2 d-flex align-items-center">
+    <label class="me-2" style="width: 100px;">Chủ nhật:</label>
+    <input type="text" id="sunday" class="form-control me-2" placeholder="Nhập môn học...">
+    <button class="btn btn-danger" onclick="clearInput(this)">🗑</button>
+  </div>
+<!-- Nút quay lại -->
+  <div class="d-flex justify-content-start align-items-center mt-3">
+    <button class="btn btn-outline-secondary" onclick="showPage('home')">⬅ Quay lại trang chủ</button>
+  </div>
+</div>
+
+
+  <!-- Cài đặt -->
+<div class="container py-4 page-section" id="settings">
+  <h3 class="mb-4 fw-bold text-primary">⚙️ Cài đặt</h3>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <button class="w-100 btn btn-outline-primary p-3 text-start shadow-sm rounded d-flex align-items-center gap-2"
+              onclick="showKeyword()">
+        <span style="font-size: 1.5rem;">🔑</span>
+        <span class="fw-semibold">Keyword</span>
+      </button>
+    </div>
+    <div class="col-md-4">
+      <button class="w-100 btn btn-outline-success p-3 text-start shadow-sm rounded d-flex align-items-center gap-2"
+              onclick="showStorage()">
+        <span style="font-size: 1.5rem;">📦</span>
+        <span class="fw-semibold">Lưu trữ</span>
+      </button>
+    </div>
+    <div class="col-md-4">
+      <button class="w-100 btn btn-outline-dark p-3 text-start shadow-sm rounded d-flex align-items-center gap-2"
+              onclick="toggleDarkMode()">
+        <span style="font-size: 1.5rem;">🎛️</span>
+        <span class="fw-semibold">Chọn Nền</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Nội dung ẩn/hiện -->
+<div id="keyword-section" style="display: none;">
+  <h5 class="fw-bold text-primary mb-3">📌 Quản lý Từ khóa</h5>
+
+  <!-- Ô nhập keyword -->
+  <div class="input-group mb-3" style="max-width: 400px;">
+    <input type="text" id="keyword-input" class="form-control" placeholder="Nhập từ khóa mới...">
+    <button class="btn btn-primary" onclick="addKeyword()">➕</button>
+  </div>
+
+  <!-- Danh sách từ khóa -->
+  <div class="mb-4" style="max-height: 200px; overflow-y: auto; max-width: 400px;">
+    <h6 class="fw-semibold">📃 Danh sách từ khóa:</h6>
+    <ul id="keyword-list" class="list-group small"></ul>
+  </div>
+
+  <!-- Danh sách câu chat chứa từ khóa -->
+  <div>
+    <h6 class="fw-semibold">💬 Các đoạn chat chứa từ khóa:</h6>
+    <div id="keyword-messages" class="border rounded p-3" style="background: var(--bs-light); color: var(--bs-body-color); max-height: 300px; overflow-y: auto;"></div>
+  </div>
+</div>
+
+
+  <div id="storage-section" style="display:none">
+    <div id="password-area">
+      <label>Nhập mật khẩu:</label>
+      <input type="password" id="storage-password" class="form-control w-50 d-inline-block" />
+      <button class="btn btn-sm btn-primary" onclick="verifyPassword()">Xác nhận</button>
+      <p id="password-error" class="text-danger mt-2"></p>
+    </div>
+
+    <div id="note-area" style="display:none">
+      <textarea id="note-input" class="form-control mb-2" rows="3" placeholder="Nhập ghi chú..."></textarea>
+      <button class="btn btn-success mb-3" onclick="saveNote()">💾 Lưu ghi chú</button>
+      <input type="file" id="image-upload" class="form-control mb-3" accept="image/*" onchange="uploadImage(event)">
+      <div id="note-list"></div>
+    </div>
+  </div>
+</div>
+
+  <!-- JavaScript -->
+<script src="js/helpers.js"></script>
+<script src="js/schedule.js"></script>
+<script type="module" src="js/gps.js"></script>
+<script src="js/assistant.js"></script>
+<script src="js/setting.js"></script>
+<script src="js/toggleOnline.js"></script>
+<script src="js/weather.js"></script>
+<script src="js/reminder.js"></script>
+<script src="js/clock.js"></script>
+<script src="js/keyword.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/map.js"></script>
+<script src="js/main.js"></script>
+
+
+</body>
+</html>

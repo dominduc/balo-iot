@@ -1,0 +1,286 @@
+/* === GIAO DIỆN CƠ BẢN === */
+body {
+  background-color: #ecf3fb;
+  font-family: 'Segoe UI', sans-serif; 
+}
+
+.card {
+  border-radius: 1rem; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+  height: 100%; 
+}
+
+.section-title {
+  font-weight: 600; 
+  margin-bottom: 1rem;
+}
+
+.card p {
+  margin-bottom: 0.5rem;
+}
+
+.clickable {
+  cursor: pointer;
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.nav-link.active {
+  font-weight: bold;
+  color: #0d6efd !important;
+}
+
+.page-section {
+  display: none;
+}
+
+.page-section.active {
+  display: block;
+}
+
+/* === CHATBOX MỚI === */
+.chat-box {
+  height: 300px;
+  overflow-y: auto;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  scroll-behavior: smooth;
+}
+
+/* === TIN NHẮN CHUNG === */
+.message {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  padding: 10px 14px;
+  margin: 6px 0;
+  border-radius: 14px;
+  max-width: 80%;
+  word-wrap: break-word;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+/* === KHI HIỂN THỊ === */
+.message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* === USER === */
+.message.user {
+  background-color: #78b947;
+  color: white;
+  align-self: flex-end;
+  margin-left: auto;
+  margin-right: 8px;
+  text-align: right;
+}
+
+/* === BOT === */
+.message.bot {
+  background-color: #d08080;
+  color: white;
+  align-self: flex-start;
+  margin-right: auto;
+  margin-left: 8px;
+  text-align: left;
+}
+
+
+/* === DARK MODE === */
+body.dark {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+body.dark .card {
+  background-color: #2b2b2b;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(255,255,255,0.05);
+}
+
+body.dark .navbar {
+  background-color: #2a2a2a !important;
+}
+
+body.dark .nav-link {
+  color: #ccc !important;
+}
+
+body.dark .nav-link.active {
+  color: #fff !important;
+}
+
+body.dark .form-control,
+body.dark .btn {
+  background-color: #444;
+  color: #fff;
+  border-color: #666;
+}
+
+body.dark .btn-outline-secondary {
+  border-color: #999;
+  color: #ccc;
+}
+
+body.dark textarea,
+body.dark input[type="password"],
+body.dark input[type="file"] {
+  background-color: #333;
+  color: #fff;
+  border-color: #666;
+}
+
+body.dark .list-group-item {
+  background-color: #2b2b2b;
+  color: #fff;
+}
+
+body.dark .bg-light {
+  background-color: #3a3a3a !important;
+  color: #fff !important;
+}
+
+/* === LƯU TRỮ / NOTE === */
+#note-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.note-item {
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  padding: 10px 12px;
+  border-radius: 8px;
+  word-wrap: break-word;
+}
+
+.note-item img.note-img {
+  max-height: 100px;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  margin-left: auto;
+  border-radius: 6px;
+}
+
+body.dark .note-item {
+  background-color: #333;
+  color: #fff;
+  border-color: #555;
+}
+
+body.dark .note-item img.note-img {
+  filter: brightness(0.9);
+}
+
+
+/* === LIST GROUP ITEM === */
+.list-group-item {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  background-color: #fff;
+}
+
+.list-group-item:hover {
+  background-color: #f0f8ff;
+  transform: translateX(4px);
+  cursor: pointer;
+}
+
+/* === BUTTON HOVER EFFECT TRONG CÀI ĐẶT === */
+#settings .btn:hover {
+  transform: translateY(-2px);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Mini Clock Style */
+.mini-clock {
+  padding: 6px 12px;
+  background-color: #f0f8ff;
+  border: 1px solid #007bff;
+  border-radius: 8px;
+  font-weight: 500;
+  color: #007bff;
+  min-width: 120px;
+  text-align: center;
+  font-family: monospace;
+  font-size: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+/* === POPUP NHẮC NHỞ === */
+.reminder-popup {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 16px;
+  z-index: 9999;
+  border: 1px solid #ccc;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.popup-header {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+
+.reminder-popup {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 320px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 9999;
+}
+
+.popup-content {
+  padding: 16px;
+}
+
+/* === BADGE ĐẾM LỜI NHẮC Ở TRANG CHỦ === */
+.reminder-count {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #dc3545;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+/* === HUY HIỆU TRÒN MÀU ĐỎ CHO LỜI NHẮC === */
+.reminder-bubble {
+  display: inline-block;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: white;
+  background-color: #dc3545;
+  border-radius: 999px;
+  text-align: center;
+  line-height: 20px;
+  margin-left: 8px;
+}
+

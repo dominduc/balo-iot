@@ -1,0 +1,5 @@
+web đã gần hoàn thiện phần chat trợ lí aro
+
+chỉ thiếu phần nhận diện keyword và cảnh báo
+
+còn thời khóa biểu cũng xong 1 phần, chỉ còn chuyềnesp->lcd1602 nữa là xong
